@@ -12,7 +12,9 @@ Options:
 6) Search donors by sex
 7) Search donors by type
 8) Check blood quantity by type
-9) Exit
+9) Update donor's blood quantity
+10) Delete donor from database
+0) Exit
 
 Select: """
 
@@ -21,55 +23,89 @@ def menu():
     connection = database.connect_db()
     database.create_table(connection)
     
-    while (user_input := input(MENU_PROMPT)) != "9":
+    while (user_input := input(MENU_PROMPT)) != "0":
         if user_input == "1":
-            name = input("Enter donor's name: ")
-            surname = input("Enter donor's surname: ")
-            age = int(input("Enter donor's age: "))
-            sex = input("Enter donor's sex: ")
-            bloodtype = input("Enter donor's blood type: ")
-            quantity = int(input("Enter quantity donated: "))
-            database.add_donor(connection, name, surname, age, sex, bloodtype, quantity)
+            add_new_donor(connection)
         elif user_input == "2":
-            list_of_donors = database.get_all_donors(connection)
-            for donor in list_of_donors:
-                print(donor)
+            list_donors(connection)
         elif user_input == "3":
-            if user_input == "3":
-                name = input("Enter donor's name: ")
-                get_donors_by_name = database.get_donors_by_name(connection, name)
-                for name in get_donors_by_name:
-                    print(name)
+            search_donors_by_name(connection)
         elif user_input == "4":
-            if user_input == "4":
-                surname = input("Enter donor's surname: ")
-                get_donors_by_surname = database.get_donors_by_surname(connection, surname)
-                for surname in get_donors_by_surname:
-                    print(surname)
+            search_donors_by_surname(connection)
         elif user_input == "5":
-            if user_input == "5":
-                age = int(input("Enter donor's age: "))
-                get_donors_by_age = database.get_donors_by_age(connection, age)
-                for age in get_donors_by_age:
-                    print(age)
+            search_donors_by_age(connection)
         elif user_input == "6":
-            if user_input == "6":
-                sex = input("Enter donor's sex: ")
-                get_donors_by_sex = database.get_donors_by_sex(connection, sex)
-                for sex in get_donors_by_sex:
-                    print(sex)
+            search_donors_by_sex(connection)
         elif user_input == "7":
-            if user_input == "7":
-                bloodtype = input("Enter donor's blood type: ")
-                get_donors_by_type = database.get_donors_by_type(connection, bloodtype)
-                for bloodtype in get_donors_by_type:
-                    print(bloodtype)
+            search_donors_by_bloodtype(connection)
         elif user_input == "8":
-            blood_quantity = database.get_type_quantity(connection)
-            for bloodtype in blood_quantity:
-                print(bloodtype)
+            check_blood_quanity(connection)
+        elif user_input == "9":
+            update_bloods_quantity(connection)
+        elif user_input == "10":
+            remove_donor_from_db(connection)
         else:
             print("Invalid input")
 
-        
+
+def add_new_donor(connection):
+    name = input("Enter donor's name: ")
+    surname = input("Enter donor's surname: ")
+    age = int(input("Enter donor's age: "))
+    sex = input("Enter donor's sex: ")
+    bloodtype = input("Enter donor's blood type: ")
+    quantity = int(input("Enter quantity donated: "))
+    database.add_donor(connection, name, surname, age, sex, bloodtype, quantity)
+
+def list_donors(connection):
+    list_donors = database.fetch_all_donors(connection)
+    for donor in list_donors:
+        print(donor)   
+def search_donors_by_name(connection):
+    name = input("Enter donor's name: ")
+    get_donors_by_name = database.fetch_donors_by_name(connection, name)
+    for name in get_donors_by_name:
+        print(name)
+
+def search_donors_by_surname(connection):
+    surname = input("Enter donor's surname: ")
+    get_donors_by_surname = database.fetch_donors_by_surname(connection, surname)
+    for surname in get_donors_by_surname:
+        print(surname)
+
+def search_donors_by_age(connection):
+    age = int(input("Enter donor's age: "))
+    get_donors_by_age = database.fetch_donors_by_age(connection, age)
+    for age in get_donors_by_age:
+        print(age)
+
+def search_donors_by_sex(connection):
+    sex = input("Enter donor's sex: ")
+    get_donors_by_sex = database.fetch_donors_by_sex(connection, sex)
+    for sex in get_donors_by_sex:
+        print(sex)
+
+def search_donors_by_bloodtype(connection):
+    bloodtype = input("Enter donor's blood type: ")
+    get_donors_by_type = database.fetch_donors_by_type(connection, bloodtype)
+    for bloodtype in get_donors_by_type:
+        print(bloodtype)
+
+def check_blood_quanity(connection):
+    blood_quantity = database.fetch_type_quantity(connection)
+    for bloodtype in blood_quantity:
+        print(bloodtype)
+
+def update_bloods_quantity(connection):
+    name = input("Enter donor's name: ")
+    surname = input("Enter donor's surname: ")
+    quantity = int(input("Enter quantity: "))
+    database.update_blood_quantity_in_db(connection, name, surname, quantity)
+
+
+def remove_donor_from_db(connection):
+    name = input("Enter donor's name: ")
+    surname = input("Enter donor's surname: ")
+    database.remove_donor(connection, name, surname)
+
 menu()
