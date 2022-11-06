@@ -6,14 +6,15 @@ Options:
 
 1) Add a new donor 
 2) Search all donors
-3) Search donors by name
-4) Search donors by surname
-5) Search donors by age
-6) Search donors by sex
-7) Search donors by type
-8) Check blood quantity by type
-9) Update donor's blood quantity
-10) Delete donor from database
+3) Search donors by id
+4) Search donors by name
+5) Search donors by surname
+6) Search donors by age
+7) Search donors by sex
+8) Search donors by type
+9) Check blood quantity by type
+10) Update donor's blood quantity
+11) Delete donor from database
 0) Exit
 
 Select: """
@@ -29,20 +30,22 @@ def menu():
         elif user_input == "2":
             list_donors(connection)
         elif user_input == "3":
-            search_donors_by_name(connection)
+            search_donors_by_id(connection)
         elif user_input == "4":
-            search_donors_by_surname(connection)
+            search_donors_by_name(connection)
         elif user_input == "5":
-            search_donors_by_age(connection)
+            search_donors_by_surname(connection)
         elif user_input == "6":
-            search_donors_by_sex(connection)
+            search_donors_by_age(connection)
         elif user_input == "7":
-            search_donors_by_bloodtype(connection)
+            search_donors_by_sex(connection)
         elif user_input == "8":
-            check_blood_quanity(connection)
+            search_donors_by_bloodtype(connection)
         elif user_input == "9":
-            update_bloods_quantity(connection)
+            check_blood_quanity(connection)
         elif user_input == "10":
+            update_bloods_quantity(connection)
+        elif user_input == "11":
             remove_donor_from_db(connection)
         else:
             print("Invalid input")
@@ -61,6 +64,13 @@ def list_donors(connection):
     list_donors = database.fetch_all_donors(connection)
     for donor in list_donors:
         print(donor)   
+
+def search_donors_by_id(connection):
+    id = input("Enter donor's id: ")
+    get_donors_by_id = database.fetch_donors_by_id(connection, id)
+    for id in get_donors_by_id:
+        print(id)
+
 def search_donors_by_name(connection):
     name = input("Enter donor's name: ")
     get_donors_by_name = database.fetch_donors_by_name(connection, name)
@@ -104,8 +114,7 @@ def update_bloods_quantity(connection):
 
 
 def remove_donor_from_db(connection):
-    name = input("Enter donor's name: ")
-    surname = input("Enter donor's surname: ")
-    database.remove_donor(connection, name, surname)
+    id = input("Enter donor's id: ")
+    database.remove_donor(connection, id)
 
 menu()
