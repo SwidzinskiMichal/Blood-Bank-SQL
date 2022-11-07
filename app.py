@@ -107,11 +107,9 @@ def check_blood_quanity(connection):
         print(bloodtype)
 
 def update_bloods_quantity(connection):
-    name = input("Enter donor's name: ")
-    surname = input("Enter donor's surname: ")
+    id = input("Enter donor's id: ")
     quantity = int(input("Enter quantity: "))
-    database.update_blood_quantity_in_db(connection, name, surname, quantity)
-
+    database.update_blood_quantity_in_db(connection, id, quantity)
 
 def remove_donor_from_db(connection):
     id = input("Enter donor's id: ")

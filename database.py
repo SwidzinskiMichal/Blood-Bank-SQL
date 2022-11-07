@@ -18,7 +18,7 @@ GET_TYPE_QUANTITY = """
                     FROM donors
                     GROUP BY bloodtype;
                     """
-UPDATE_BLOOD_QUANTITY = "UPDATE donors SET quantity = ? WHERE name = ? AND surname = ?;"
+UPDATE_BLOOD_QUANTITY = "UPDATE donors SET quantity = ? WHERE id = ?;"
 DELTE_DONOR = "DELETE FROM donors WHERE id = ?;" 
                 
 
@@ -40,8 +40,8 @@ def add_donor(cursor, name, surname, age, sex, bloodtype, quantity):
 def fetch_all_donors(cursor):
     return cursor.execute(GET_ALL_DONORS).fetchall()
 
-def fetch_donors_by_id(cursor):
-    return cursor.execute(GET_DONOR_BY_ID).fetchone()
+def fetch_donors_by_id(cursor, id):
+    return cursor.execute(GET_DONOR_BY_ID, (id,)).fetchone()
 
 def fetch_type_quantity(cursor):
     return cursor.execute(GET_TYPE_QUANTITY).fetchall()
@@ -61,8 +61,8 @@ def fetch_donors_by_sex(cursor, sex):
 def fetch_donors_by_type(cursor, bloodtype):
     return cursor.execute(GET_DONORS_BY_TYPE, (bloodtype,)).fetchall()
 
-def update_blood_quantity_in_db(cursor, name, surname, quantity):
-    cursor.execute(UPDATE_BLOOD_QUANTITY,(quantity, name, surname, ))
+def update_blood_quantity_in_db(cursor, quantity, id):
+    cursor.execute(UPDATE_BLOOD_QUANTITY,(quantity, id,))
          
 def remove_donor(cursor, id):
     cursor.execute(DELTE_DONOR,(id,))
